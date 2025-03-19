@@ -3,6 +3,7 @@ package com.cineverso.api_cineverso.controllers;
 import com.cineverso.api_cineverso.models.Movie.CreateMovieRequest;
 import com.cineverso.api_cineverso.models.Movie.Movie;
 import com.cineverso.api_cineverso.models.Movie.MovieGenres;
+import com.cineverso.api_cineverso.models.Movie.RatingRequest;
 import com.cineverso.api_cineverso.services.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -60,4 +61,9 @@ public class MovieController {
         return ResponseEntity.ok(movieService.findAllMovies());
     }
 
+    @PostMapping("/rating")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public  ResponseEntity<Movie> ratingMovie(@RequestBody RatingRequest ratingRequest){
+        return  ResponseEntity.ok(movieService.addRatingToMove(ratingRequest.movieId(),ratingRequest));
+    }
 }

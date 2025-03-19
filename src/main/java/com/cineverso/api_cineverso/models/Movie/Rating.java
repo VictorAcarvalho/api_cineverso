@@ -21,7 +21,7 @@ public class Rating {
     @Column(name = "rating_id")
     private UUID ratingId;
 
-    private Double score;
+    private Long score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

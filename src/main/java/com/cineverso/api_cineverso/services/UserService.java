@@ -34,6 +34,21 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
+    private User getAUserById(UUID userId){
+        return userRepository.findById(userId).orElseThrow(()->
+                new EntityNotFoundException("User not found"));
+    }
+
+    public User getUserByToken(){
+       var userId = jwtUtil.extractUserIdFromToken();
+       return getAUserById(userId);
+    }
+
+    public Optional<User> findByEmail(String userEmail){
+        var user = userRepository.findByEmail(userEmail);
+        log.info("User email {} founded in repository: {}",userEmail, !user.isEmpty());
+        return user;
+    }
     public String createUser(CreateUserRequest createUserRequest) {
         boolean existsUserWithThisEmail = userRepository.existsByEmail(createUserRequest.email());
 
@@ -52,25 +67,16 @@ public class UserService {
         return "User been created";
     }
 
-    public Optional<User> findByEmail(String userEmail){
-        var user = userRepository.findByEmail(userEmail);
-        log.info("User email {} founded in repository: {}",userEmail, !user.isEmpty());
-        return user;
-    }
+
 
     @Transactional
     public String deleteAUserById(){
-        UUID userId = jwtUtil.extractUserIdFromToken();
-
-        var user = userRepository.findById(userId)
-                .orElseThrow(()->new EntityNotFoundException("user not found for delete"));
-
-
+        var user = getUserByToken();
 
         if(user.isActive()){
             user.setActive(false);
             try {
-                log.info("[{}]- deleting user: {}", StepsLabels.DELETE_USER, userId);
+                log.info("[{}]- deleting user: {}", StepsLabels.DELETE_USER, user.getId());
                 userRepository.save(user);
             } catch (Exception e) {
                 log.info("[{}]- A error ocurred on deleting user: {}", StepsLabels.DELETE_USER ,e.getCause());
@@ -82,17 +88,16 @@ public class UserService {
 
     @Transactional
     public String activeAUser(){
-        UUID userId = jwtUtil.extractUserIdFromToken();
-        var user = userRepository.findById(userId)
-                .orElseThrow(()->new EntityNotFoundException("user not found for delete"));
+        var user = getUserByToken();
+
 
         if(!user.isActive()){
             user.setActive(true);
             try {
-                log.info("[{}]- activating user: {}", StepsLabels.ACTIVE_USER, userId);
+                log.info("[{}]- activating user: {}", StepsLabels.ACTIVE_USER, user.getId());
                 userRepository.save(user);
             } catch (Exception e) {
-                log.error("[{}] A error ocurred on activating user: {}", StepsLabels.ACTIVE_USER     ,e.getMessage());
+                log.error("[{}] A error ocurred on activating user: {}", StepsLabels.ACTIVE_USER ,e.getMessage());
                 throw new RuntimeException("Something was wrong");
             }
         }
@@ -101,9 +106,7 @@ public class UserService {
     }
 
     public User updateUser(UpdateUserRequest updateUserRequest){
-        UUID userId = jwtUtil.extractUserIdFromToken();
-        var user = userRepository.findById(userId)
-                .orElseThrow(()->new EntityNotFoundException("user not found for delete"));
+        var user = getUserByToken();
 
         user.setUpdatedAt(LocalDateTime.now());
         user.setName(updateUserRequest.name());
@@ -115,4 +118,5 @@ public class UserService {
             throw new RuntimeException("Something was wrong");
         }
     }
+
 }

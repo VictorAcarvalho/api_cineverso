@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: "api_cineverso"
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/cineverso_db"
+    username: "myuser"
+    password: "secret"
+
+  jpa:
+    hibernate:
+      ddl-auto: "update"
+
+jwt:
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub

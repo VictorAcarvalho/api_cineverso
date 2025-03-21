@@ -18,7 +18,7 @@ fossem identificados por credencial(role) e usuário, evitando a alteração de 
   - Melhoria na trativa de erro, utilizando um padrão factory para definir alguns casos.
   - Melhoria no adapter para verificação de dados
   - Implementação de padrão strategy case para validação de dados
-
+  - Melhoria em cobertura de testes
 
 ## Milestones
 - [x] Endpoints de usuário (criação, soft delete, update, busca)
@@ -31,6 +31,7 @@ fossem identificados por credencial(role) e usuário, evitando a alteração de 
 - [ ] CD/CD (Cobertura de testes, padronização de código, vulnerabilidade(*trivy*), deploy )
 - [ ] Deploy em ambiente cloud
 - [ ] Documentação Swagger
+
 
 ## Tecnologias
 

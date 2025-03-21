@@ -48,4 +48,20 @@ public class UserController {
     public  ResponseEntity<User> updateUser(@RequestBody UpdateUserRequest updateUserRequest){
         return ResponseEntity.ok(userService.updateUser(updateUserRequest));
     }
+
+    @GetMapping()
+    public ResponseEntity<User> getUserInfo(){
+        return  ResponseEntity.ok(userService.getUserByToken());
+    }
+
+    @PostMapping("/admin" )
+    public ResponseEntity<String> createAdminUser(@RequestBody() CreateUserRequest request){
+        log.info("[{}]- creating user for email: {}", StepsLabels.CREATE_USER, request.email());
+
+        String savedCreateUser = userService.createUser(request);
+
+        return ResponseEntity.status(201).body(savedCreateUser);
+    }
+
 }
+

@@ -4,6 +4,7 @@ import com.cineverso.api_cineverso.models.Movie.CreateMovieRequest;
 import com.cineverso.api_cineverso.models.Movie.Movie;
 import com.cineverso.api_cineverso.models.Movie.MovieGenres;
 import com.cineverso.api_cineverso.models.Movie.RatingRequest;
+import com.cineverso.api_cineverso.models.StepsLabels;
 import com.cineverso.api_cineverso.services.MovieService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,13 +36,12 @@ public class MovieController {
     @PutMapping({"/{movieId}"})
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Movie> updateMovieById(@RequestBody CreateMovieRequest createMovieRequest , @PathVariable("movieId") String moveId){
-        log.info("[{] - start updating movie: {}", createMovieRequest.title());
+        log.info("[{} ] - start updating movie: {}", StepsLabels.UPDATE_MOVIE, createMovieRequest.title());
         return  ResponseEntity.ok(movieService.updateMovie(moveId,createMovieRequest));
     }
 
     @GetMapping({"/{movieId}"})
     public ResponseEntity<Movie> getMovie(@PathVariable("movieId") String moveId){
-
         return ResponseEntity.ok(movieService.getMovieById(moveId));
     }
 

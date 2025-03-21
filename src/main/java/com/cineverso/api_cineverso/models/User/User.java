@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Builder.Default
-    private boolean active = false;
+    private boolean active = true;
 
     @Builder.Default
     private String picture = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";

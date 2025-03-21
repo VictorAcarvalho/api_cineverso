@@ -1,4 +1,4 @@
 package com.cineverso.api_cineverso.models.Auth;
 
-public record LoginResponse(String acesstoken, Long expiresIn) {
+public record LoginResponse(String accesstoken, Long expiresIn) {
 }
